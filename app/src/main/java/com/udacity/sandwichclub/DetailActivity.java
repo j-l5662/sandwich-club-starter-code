@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,27 +71,37 @@ public class DetailActivity extends AppCompatActivity {
         sandwichOrigin.setText(sandwich.getPlaceOfOrigin());
         description.setText(sandwich.getDescription());
         ArrayList<String> ingredientsList = (ArrayList<String>)sandwich.getIngredients();
-        String ingredientsListoutput = "";
-        if (ingredientsList != null){
-            // Add last item , and etc...
-            for (String string : ingredientsList){
-                ingredientsListoutput += string +", ";
-            }
-            if (ingredientsListoutput.isEmpty()){
-                ingredientsListoutput = "N/A";
-            }
-        }
+        Log.d("Ing.", ingredientsList.get(0));
+        String ingredientsListoutput = outputList(ingredientsList);
         ingredients.setText(ingredientsListoutput);
         ArrayList<String> akaList = (ArrayList<String>)sandwich.getAlsoKnownAs();
-        String akaListoutput = "";
-        if (akaList != null){
-            for (String string : akaList){
-                akaListoutput += string +", ";
+//        Log.d("Aka", akaList.get(0));
+        String akaListoutput = outputList(akaList);
+        alsoKnownAs.setText(akaListoutput);
+    }
+
+    private String outputList(ArrayList<String> list){
+        String output = "";
+        if (list != null){
+            Log.d("Size", Integer.toString(list.size()));
+            if(list.size() == 0){
+                output = "N/A";
             }
-            if(akaListoutput.isEmpty()){
-                akaListoutput = "N/A";
+            else if(list.size() == 1)
+                output = list.get(0);
+            else if(list.size() == 2)
+                output = list.get(0) + ' ' + list.get(1);
+            else{
+                for(int i = 0; i < list.size(); i++){
+                    if( i+1 == list.size()){
+                        output += ("and " + list.get(i));
+                    }
+                    else{
+                        output += list.get(i) + ", ";
+                    }
+                }
             }
         }
-        alsoKnownAs.setText(akaListoutput);
+        return output;
     }
 }
